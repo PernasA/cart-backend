@@ -1,5 +1,7 @@
 package com
 
+import com.auth.configureFirebaseAuth
+import com.config.configureFirebase
 import com.db.DatabaseFactory
 import com.plugins.configureRouting
 import com.plugins.configureSerialization
@@ -17,7 +19,9 @@ fun main() {
 fun Application.module() {
     DatabaseFactory.init()
 
-    configureSerialization()
-    configureRouting()
-    configureStatusPages()
+    configureFirebase()        // 1. SDK Firebase (infra)
+    configureFirebaseAuth()    // 2. Auth of Ktor
+    configureSerialization()  // 3. JSON
+    configureStatusPages()    // 4. errors
+    configureRouting()        // 5. routes (with auth)
 }
