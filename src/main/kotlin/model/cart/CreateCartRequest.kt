@@ -1,4 +1,4 @@
-package com.model
+package com.model.cart
 
 import kotlinx.serialization.Serializable
 

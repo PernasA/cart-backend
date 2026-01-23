@@ -1,4 +1,4 @@
-package com.model
+package com.model.cart
 
 import java.util.UUID
 import java.math.BigDecimal

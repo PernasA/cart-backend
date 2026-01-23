@@ -1,12 +1,8 @@
 package com.domain
 
 import com.domain.CartRepository.getCart
-import com.model.CartResponse
-import com.model.CreateCartRequest
-import com.security.UserKey
-import com.security.ensureUser
+import com.model.cart.CreateCartRequest
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.auth.authenticate
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond

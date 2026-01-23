@@ -2,9 +2,9 @@ package com.domain
 
 import com.db.CartItemsTable
 import com.db.CartsTable
-import com.model.CartItemRequest
-import com.model.CartItemResponse
-import com.model.CartResponse
+import com.model.cart.CartItemRequest
+import com.model.cart.CartItemResponse
+import com.model.cart.CartResponse
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
