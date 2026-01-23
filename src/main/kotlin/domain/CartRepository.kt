@@ -2,6 +2,7 @@ package com.domain
 
 import com.db.CartItemsTable
 import com.db.CartsTable
+import com.domain.exception.UserNotFoundException
 import com.model.cart.CartItemRequest
 import com.model.cart.CartItemResponse
 import com.model.cart.CartResponse
@@ -25,6 +26,11 @@ object CartRepository {
         items: List<CartItemRequest>
     ): UUID =
         transaction {
+
+            if (!UserRepository.exists(userId)) {
+                throw UserNotFoundException()
+            }
+
             val cartId = CartsTable.insertAndGetId {
                 it[CartsTable.userId] = userId
                 it[CartsTable.name] = name
