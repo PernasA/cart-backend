@@ -1,0 +1,16 @@
+{
+  "name": "Mi primer carrito",
+  "createdAt": 1700000000000,
+  "items": [
+    {
+      "name": "Producto A",
+      "price": 100.50,
+      "quantity": 2
+    },
+    {
+      "name": "Producto B",
+      "price": 50,
+      "quantity": 1
+    }
+  ]
+}

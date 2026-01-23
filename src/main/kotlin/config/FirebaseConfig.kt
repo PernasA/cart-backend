@@ -6,12 +6,16 @@ import com.google.firebase.FirebaseOptions
 import java.io.File
 
 fun configureFirebase() {
+    val path = System.getenv("FIREBASE_CREDENTIALS_PATH")
+        ?: run {
+            println("Firebase disabled (no credentials)")
+            return
+        }
+
     if (FirebaseApp.getApps().isNotEmpty()) return
+    //TODO: implementar en prod el service-account.json
 
-    val serviceAccountPath = System.getenv("FIREBASE_CREDENTIALS_PATH")
-        ?: error("FIREBASE_CREDENTIALS_PATH not set")
-
-    val serviceAccount = File(serviceAccountPath).inputStream()
+    val serviceAccount = File(path).inputStream()
 
     val options = FirebaseOptions.builder()
         .setCredentials(GoogleCredentials.fromStream(serviceAccount))

@@ -1,5 +1,6 @@
 package com.db
 
+import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
 
@@ -24,16 +25,14 @@ object DevicesTable : Table("devices") {
     override val primaryKey = PrimaryKey(id)
 }
 
-object CartsTable : Table("carts") {
-    val id = uuid("id").autoGenerate()
+object CartsTable : UUIDTable("carts") {
+
     val userId = uuid("user_id").references(UsersTable.id)
     val deviceId = uuid("device_id").references(DevicesTable.id).nullable()
     val name = varchar("name", 255).nullable()
     val clientCreatedAt = long("client_created_at").nullable()
     val createdAt = timestamp("created_at")
     val syncStatus = varchar("sync_status", 50)
-
-    override val primaryKey = PrimaryKey(id)
 }
 
 object CartItemsTable : Table("cart_items") {
