@@ -3,6 +3,7 @@ package com.plugins
 
 import com.auth.FirebasePrincipal
 import com.domain.cartRoutes
+import com.domain.statsRoutes
 import com.domain.userRoutes
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -32,5 +33,6 @@ fun Application.configureRouting() {
 
         cartRoutes()
         userRoutes()
+        statsRoutes()
     }
 }

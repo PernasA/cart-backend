@@ -8,14 +8,9 @@ import com.model.serializer.BigDecimalSerializer
 
 @Serializable
 data class CartItemResponse(
-    @Serializable(with = UUIDSerializer::class)
-    val id: UUID,
-
+     val id: String,
     val name: String,
-
-    @Serializable(with = BigDecimalSerializer::class)
-    val price: BigDecimal,
-
+    val price: Double,
     val quantity: Int
 )
 

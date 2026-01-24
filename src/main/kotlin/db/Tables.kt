@@ -25,21 +25,21 @@ object DevicesTable : Table("devices") {
     override val primaryKey = PrimaryKey(id)
 }
 
-object CartsTable : UUIDTable("carts") {
-
-    val userId = uuid("user_id").references(UsersTable.id)
-    val deviceId = uuid("device_id").references(DevicesTable.id).nullable()
+object CartsTable : Table("carts") {
+    val id = uuid("id")
+    val userId = uuid("user_id")
     val name = varchar("name", 255).nullable()
-    val clientCreatedAt = long("client_created_at").nullable()
-    val createdAt = timestamp("created_at")
-    val syncStatus = varchar("sync_status", 50)
+    val createdAt = long("created_at") // epoch millis
+
+    override val primaryKey = PrimaryKey(id)
 }
 
+
 object CartItemsTable : Table("cart_items") {
-    val id = uuid("id").autoGenerate()
+    val id = uuid("id")
     val cartId = uuid("cart_id").references(CartsTable.id)
     val name = varchar("name", 255)
-    val price = decimal("price", 12, 2)
+    val price = double("price")
     val quantity = integer("quantity")
 
     override val primaryKey = PrimaryKey(id)
