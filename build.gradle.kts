@@ -32,3 +32,13 @@ dependencies {
     implementation(libs.hikari)
     implementation(libs.firebase)
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}

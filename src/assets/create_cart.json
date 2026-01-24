@@ -1,0 +1,16 @@
+{
+  "name": "Supermercado Día",
+  "createdAt": 1710000000000,
+  "items": [
+    {
+      "name": "Leche",
+      "price": 1200.50,
+      "quantity": 2
+    },
+    {
+      "name": "Pan",
+      "price": 800.00,
+      "quantity": 1
+    }
+  ]
+}

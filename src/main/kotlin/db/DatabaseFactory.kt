@@ -1,39 +1,57 @@
 package com.db
 
+import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.server.config.HoconApplicationConfig
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.Instant
+import java.util.UUID
 
 object DatabaseFactory {
 
     fun init() {
-        val dataSource = hikari()
-        Database.Companion.connect(dataSource)
+        val jdbcUrlSystem = System.getenv("DATABASE_URL")
+            ?: "jdbc:postgresql://localhost:5432/cart_db"
 
-        transaction {
-            SchemaUtils.create(
-                UsersTable,
-                DevicesTable,
-                CartsTable,
-                CartItemsTable
-            )
-        }
-    }
+        val user = System.getenv("DB_USER") ?: "postgres"
+        val passwordSystem = System.getenv("DB_PASSWORD") ?: "1501"
 
-    private fun hikari(): HikariDataSource {
-        val config = HikariConfig().apply {
-            jdbcUrl = System.getenv("DB_URL")
-            username = System.getenv("DB_USER")
-            password = System.getenv("DB_PASSWORD")
-
+        val hikariConfig = HikariConfig().apply {
+            jdbcUrl = jdbcUrlSystem
+            username = user
+            password = passwordSystem
             driverClassName = "org.postgresql.Driver"
-            maximumPoolSize = 10
+            maximumPoolSize = 5
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            validate()
         }
-        return HikariDataSource(config)
+
+        val dataSource = HikariDataSource(hikariConfig)
+
+        Database.connect(dataSource)
+
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(UsersTable)
+            SchemaUtils.createMissingTablesAndColumns(CartsTable)
+        }
+        transaction {
+            UsersTable.insertIgnore {
+                it[id] = UUID.fromString("00000000-0000-0000-0000-000000000001")
+                it[firebaseUid] = "local_dev_uid"
+                it[email] = "dev@test.com"
+                it[displayName] = "Local Dev User"
+                it[createdAt] = Instant.now()
+            }
+        }
     }
+}
+
+object ApplicationConfigProvider {
+    fun dbUrl() = HoconApplicationConfig(ConfigFactory.load()).property("db.url").getString()
+    fun dbUser() = HoconApplicationConfig(ConfigFactory.load()).property("db.user").getString()
+    fun dbPassword() = HoconApplicationConfig(ConfigFactory.load()).property("db.password").getString()
 }

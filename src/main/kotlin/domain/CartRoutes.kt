@@ -44,7 +44,7 @@ fun Route.cartRoutes() {
         post {
             val request = call.receive<CreateCartRequest>()
 
-            // ⚠ hardcodeado SOLO para local
+            // hardcoded only for local testing
             val userId = UUID.fromString("00000000-0000-0000-0000-000000000001")
 
             val cartId = CartRepository.createCart(

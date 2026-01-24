@@ -34,9 +34,9 @@ object CartRepository {
             val cartId = CartsTable.insertAndGetId {
                 it[CartsTable.userId] = userId
                 it[CartsTable.name] = name
-                it[CartsTable.createdAt] = Instant.ofEpochMilli(createdAt)
-                it[syncStatus] = "CREATED"
-
+                it[CartsTable.clientCreatedAt] = createdAt
+                it[CartsTable.createdAt] = Instant.now()
+                it[CartsTable.syncStatus] = "CREATED"
             }.value
 
             items.forEach { item ->
