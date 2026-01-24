@@ -1,0 +1,92 @@
+SELECT * FROM carts;
+SELECT * FROM cart_items;
+
+SELECT * FROM users;
+
+-- Usuario conectado
+SELECT current_user;
+
+-- Base de datos actual
+SELECT current_database();
+
+-- Dirección y puerto
+SELECT inet_server_addr(), inet_server_port();
+
+-- Versión de PostgreSQL
+SELECT version();
+
+-- Listar usuarios
+\du
+
+-- Ver permisos de un usuario específico
+SELECT rolname, rolsuper, rolcreatedb, rolcreaterole
+FROM pg_roles
+WHERE rolname = 'cart_app_user';
+
+-- Ver privilegios sobre tablas
+SELECT grantee, table_schema, table_name, privilege_type
+FROM information_schema.role_table_grants
+WHERE grantee = 'cart_app_user';
+
+-- Listar bases
+\l
+
+-- Listar esquemas
+\dn
+
+-- Esquema actual
+SHOW search_path;
+
+-- Listar tablas
+\dt
+
+-- Describir una tabla
+\d users
+
+-- Ver columnas con tipos
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'users';
+
+INSERT INTO users (id, firebase_uid, email, display_name, created_at)
+VALUES (
+  gen_random_uuid(),
+  'sql_test_uid',
+  'sql@test.com',
+  'SQL Test User',
+  NOW()
+);
+
+SELECT id, email, display_name, created_at
+FROM users
+ORDER BY created_at DESC
+LIMIT 5;
+
+UPDATE users
+SET display_name = 'Updated Name'
+WHERE email = 'sql@test.com';
+
+DELETE FROM users
+WHERE email = 'sql@test.com';
+
+BEGIN;
+
+INSERT INTO carts (id, user_id, created_at)
+VALUES (gen_random_uuid(), '00000000-0000-0000-0000-000000000001', NOW());
+
+ROLLBACK;  -- o COMMIT;
+
+-- Ver índices
+\di
+
+-- Crear índice (ejemplo)
+CREATE INDEX idx_users_email ON users(email);
+
+-- Ver plan de ejecución
+EXPLAIN ANALYZE
+SELECT * FROM users WHERE email = 'dev@test.com';
+
+-- Ver conexiones activas
+SELECT pid, usename, application_name, state, query
+FROM pg_stat_activity
+WHERE datname = 'cart_db';

@@ -17,8 +17,8 @@ object DatabaseFactory {
         val jdbcUrlSystem = System.getenv("DATABASE_URL")
             ?: "jdbc:postgresql://localhost:5432/cart_db"
 
-        val user = System.getenv("DB_USER") ?: "postgres"
-        val passwordSystem = System.getenv("DB_PASSWORD") ?: "1501"
+        val user = System.getenv("DB_USER") ?: error("DB_USER not set")
+        val passwordSystem = System.getenv("DB_PASSWORD") ?: error("DB_PASSWORD not set")
 
         val hikariConfig = HikariConfig().apply {
             jdbcUrl = jdbcUrlSystem
