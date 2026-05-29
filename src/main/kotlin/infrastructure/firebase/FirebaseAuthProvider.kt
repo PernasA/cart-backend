@@ -1,8 +1,13 @@
-package com.auth
+package com.infrastructure.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+
+data class FirebasePrincipal(
+    val uid: String,
+    val email: String?
+) : Principal
 
 fun Application.configureSecurity() {
 
