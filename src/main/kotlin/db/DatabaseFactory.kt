@@ -35,8 +35,7 @@ object DatabaseFactory {
         Database.connect(dataSource)
 
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(UsersTable)
-            SchemaUtils.createMissingTablesAndColumns(CartsTable)
+            SchemaUtils.createMissingTablesAndColumns(UsersTable, CartsTable, CartItemsTable)
         }
         transaction {
             UsersTable.insertIgnore {

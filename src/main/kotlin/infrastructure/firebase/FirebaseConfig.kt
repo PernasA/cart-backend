@@ -1,4 +1,4 @@
-package com.config
+package com.infrastructure.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
@@ -13,7 +13,6 @@ fun configureFirebase() {
         }
 
     if (FirebaseApp.getApps().isNotEmpty()) return
-    //TODO: implementar en prod el service-account.json
 
     val serviceAccount = File(path).inputStream()
 

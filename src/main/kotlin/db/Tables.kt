@@ -14,24 +14,17 @@ object UsersTable : Table("users") {
     override val primaryKey = PrimaryKey(id)
 }
 
-object DevicesTable : Table("devices") {
-    val id = uuid("id").autoGenerate()
-    val userId = uuid("user_id").references(UsersTable.id)
-    val deviceId = varchar("device_id", 128)
-    val platform = varchar("platform", 50).nullable()
-    val createdAt = timestamp("created_at")
-    val lastSeenAt = timestamp("last_seen_at").nullable()
-
-    override val primaryKey = PrimaryKey(id)
-}
-
 object CartsTable : Table("carts") {
     val id = uuid("id")
-    val userId = uuid("user_id")
+    val userId = uuid("user_id").references(UsersTable.id)
     val name = varchar("name", 255).nullable()
     val createdAt = long("created_at") // epoch millis
 
     override val primaryKey = PrimaryKey(id)
+
+    init {
+        index(false, userId)
+    }
 }
 
 
