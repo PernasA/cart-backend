@@ -31,6 +31,16 @@ dependencies {
     implementation(libs.postgresql)
     implementation(libs.hikari)
     implementation(libs.firebase)
+
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 java {

@@ -47,6 +47,13 @@ class CartRepositoryImpl : CartRepository {
             buildCart(cartId)
         }
 
+    override fun findByUserId(userId: UUID): List<Cart> =
+        transaction {
+            CartsTable
+                .select { CartsTable.userId eq userId }
+                .map { row -> buildCart(row[CartsTable.id]) }
+        }
+
     override fun countAll(): Long =
         transaction {
             CartsTable.selectAll().count()

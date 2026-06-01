@@ -3,11 +3,15 @@ package com.presentation
 import com.application.cart.CartItemInput
 import com.application.cart.CreateCartUseCase
 import com.application.cart.GetCartUseCase
+import com.application.cart.GetUserCartsUseCase
+import com.infrastructure.firebase.FirebasePrincipal
 import com.model.cart.CartItemResponse
 import com.model.cart.CartWithItemsResponse
 import com.model.cart.CreateCartRequest
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
@@ -19,7 +23,8 @@ import java.util.UUID
 
 fun Route.cartRoutes(
     createCartUseCase: CreateCartUseCase,
-    getCartUseCase: GetCartUseCase
+    getCartUseCase: GetCartUseCase,
+    getUserCartsUseCase: GetUserCartsUseCase
 ) {
     route("/cart") {
 
@@ -61,6 +66,34 @@ fun Route.cartRoutes(
             )
 
             call.respond(response)
+        }
+
+        authenticate("firebase-auth") {
+            get {
+                val principal = call.principal<FirebasePrincipal>()
+                    ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+                val carts = getUserCartsUseCase.execute(principal.uid)
+
+                val response = carts.map { cart ->
+                    CartWithItemsResponse(
+                        id = cart.id.toString(),
+                        userId = cart.userId.toString(),
+                        name = cart.name,
+                        createdAt = cart.createdAt.toString(),
+                        items = cart.items.map { item ->
+                            CartItemResponse(
+                                id = item.id.toString(),
+                                name = item.name,
+                                price = item.price,
+                                quantity = item.quantity
+                            )
+                        }
+                    )
+                }
+
+                call.respond(response)
+            }
         }
 
         post {

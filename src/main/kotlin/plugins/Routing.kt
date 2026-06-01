@@ -2,6 +2,7 @@ package com.plugins
 
 import com.application.cart.CreateCartUseCase
 import com.application.cart.GetCartUseCase
+import com.application.cart.GetUserCartsUseCase
 import com.application.stats.GetStatsUseCase
 import com.application.user.CreateOrGetUserUseCase
 import com.infrastructure.db.CartRepositoryImpl
@@ -23,6 +24,7 @@ fun Application.configureRouting() {
 
     val createCartUseCase = CreateCartUseCase(cartRepo)
     val getCartUseCase = GetCartUseCase(cartRepo)
+    val getUserCartsUseCase = GetUserCartsUseCase(userRepo, cartRepo)
     val createOrGetUserUseCase = CreateOrGetUserUseCase(userRepo)
     val getStatsUseCase = GetStatsUseCase(cartRepo, userRepo)
 
@@ -45,7 +47,7 @@ fun Application.configureRouting() {
             }
         }
 
-        cartRoutes(createCartUseCase, getCartUseCase)
+        cartRoutes(createCartUseCase, getCartUseCase, getUserCartsUseCase)
         userRoutes(createOrGetUserUseCase)
         statsRoutes(getStatsUseCase)
     }
